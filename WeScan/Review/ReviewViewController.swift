@@ -20,7 +20,7 @@ final class ReviewViewController: UIViewController {
         imageView.clipsToBounds = true
         imageView.isOpaque = true
         imageView.image = results.croppedScan.image
-        imageView.backgroundColor = .black
+        imageView.backgroundColor = .white
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -29,14 +29,14 @@ final class ReviewViewController: UIViewController {
     private lazy var enhanceButton: UIBarButtonItem = {
         let image = UIImage(systemName: "wand.and.rays.inverse", named: "enhance", in: Bundle(for: ScannerViewController.self), compatibleWith: nil)
         let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(toggleEnhancedImage))
-        button.tintColor = .white
+        button.tintColor = .black
         return button
     }()
     
     private lazy var rotateButton: UIBarButtonItem = {
         let image = UIImage(systemName: "rotate.right", named: "rotate", in: Bundle(for: ScannerViewController.self), compatibleWith: nil)
         let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(rotateImage))
-        button.tintColor = .white
+        button.tintColor = .black
         return button
     }()
     
@@ -61,6 +61,21 @@ final class ReviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let navController = navigationController {
+            if #available(iOS 13.0, *) {
+                navController.navigationBar.tintColor = .label
+            }
+            navController.navigationBar.shadowImage = UIImage()
+            if #available(iOS 15.0, *) {
+                // if only change background color
+                navController.view.backgroundColor = .white
+            }
+            else {
+                navController.navigationBar.tintColor = .white
+            }
+            navController.navigationBar.isTranslucent = false
+        }
 
         enhancedImageIsAvailable = results.enhancedScan != nil
         
@@ -96,7 +111,7 @@ final class ReviewViewController: UIViewController {
         guard enhancedImageIsAvailable else { return }
         
         navigationController?.toolbar.barStyle = .blackTranslucent
-        
+
         let fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         toolbarItems = [fixedSpace, enhanceButton, flexibleSpace, rotateButton, fixedSpace]

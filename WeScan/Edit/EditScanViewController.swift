@@ -17,7 +17,7 @@ final class EditScanViewController: UIViewController {
         imageView.clipsToBounds = true
         imageView.isOpaque = true
         imageView.image = image
-        imageView.backgroundColor = .black
+        imageView.backgroundColor = .white
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -70,6 +70,22 @@ final class EditScanViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
+        if let navController = navigationController {
+            if #available(iOS 13.0, *) {
+                navController.navigationBar.tintColor = .label
+            }
+            navController.navigationBar.shadowImage = UIImage()
+            if #available(iOS 15.0, *) {
+                // if only change background color
+                navController.view.backgroundColor = .white
+            }
+            else {
+                navController.navigationBar.tintColor = .white
+            }
+            navController.navigationBar.isTranslucent = false
+        }
+
+
         setupViews()
         setupConstraints()
         title = NSLocalizedString("wescan.edit.title", tableName: nil, bundle: Bundle(for: EditScanViewController.self), value: "Edit Scan", comment: "The title of the EditScanViewController")
@@ -79,7 +95,7 @@ final class EditScanViewController: UIViewController {
         } else {
             navigationItem.leftBarButtonItem = nil
         }
-        
+                
         zoomGestureController = ZoomGestureController(image: image, quadView: quadView)
         
         let touchDown = UILongPressGestureRecognizer(target: zoomGestureController, action: #selector(zoomGestureController.handle(pan:)))

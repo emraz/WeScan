@@ -45,7 +45,7 @@ public final class ScannerViewController: UIViewController {
     private lazy var autoScanButton: UIBarButtonItem = {
         let title = NSLocalizedString("wescan.scanning.auto", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Auto", comment: "The auto button state")
         let button = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(toggleAutoScan))
-        button.tintColor = .white
+        button.tintColor = .black
         
         return button
     }()
@@ -53,7 +53,7 @@ public final class ScannerViewController: UIViewController {
     private lazy var flashButton: UIBarButtonItem = {
         let image = UIImage(systemName: "bolt.fill", named: "flash", in: Bundle(for: ScannerViewController.self), compatibleWith: nil)
         let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(toggleFlash))
-        button.tintColor = .white
+        button.tintColor = .black
         
         return button
     }()
@@ -71,7 +71,7 @@ public final class ScannerViewController: UIViewController {
         super.viewDidLoad()
         
         title = nil
-        view.backgroundColor = UIColor.black
+        view.backgroundColor = UIColor.white
         
         setupViews()
         setupNavigationBar()
@@ -94,6 +94,21 @@ public final class ScannerViewController: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = true
         
         navigationController?.navigationBar.barStyle = .blackTranslucent
+        
+        if let navController = navigationController {
+            if #available(iOS 13.0, *) {
+                navController.navigationBar.tintColor = .label
+            }
+            navController.navigationBar.shadowImage = UIImage()
+            if #available(iOS 15.0, *) {
+                // if only change background color
+                navController.view.backgroundColor = .white
+            }
+            else {
+                navController.navigationBar.tintColor = .white
+            }
+            navController.navigationBar.isTranslucent = false
+        }
     }
     
     override public func viewDidLayoutSubviews() {
@@ -165,7 +180,10 @@ public final class ScannerViewController: UIViewController {
         
         if #available(iOS 11.0, *) {
             cancelButtonConstraints = [
-                cancelButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 24.0),
+                cancelButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16.0),
+                cancelButton.rightAnchor.constraint(equalTo: shutterButton.leftAnchor, constant: -16.0),
+                cancelButton.heightAnchor.constraint(equalTo: shutterButton.heightAnchor),
+                cancelButton.topAnchor.constraint(equalTo: shutterButton.topAnchor),
                 view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
             ]
             
@@ -173,7 +191,10 @@ public final class ScannerViewController: UIViewController {
             shutterButtonConstraints.append(shutterButtonBottomConstraint)
         } else {
             cancelButtonConstraints = [
-                cancelButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24.0),
+                cancelButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16.0),
+                cancelButton.rightAnchor.constraint(equalTo: shutterButton.leftAnchor, constant: -16.0),
+                cancelButton.heightAnchor.constraint(equalTo: shutterButton.heightAnchor),
+                cancelButton.topAnchor.constraint(equalTo: shutterButton.topAnchor),
                 view.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
             ]
             

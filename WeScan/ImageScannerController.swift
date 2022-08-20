@@ -67,8 +67,14 @@ public final class ImageScannerController: UINavigationController {
         
         if #available(iOS 13.0, *) {
             navigationBar.tintColor = .label
-        } else {
-            navigationBar.tintColor = .black
+        }
+        navigationBar.shadowImage = UIImage()
+        if #available(iOS 15.0, *) {
+            // if only change background color
+            self.view.backgroundColor = .white
+        }
+        else {
+            navigationBar.tintColor = .white
         }
         navigationBar.isTranslucent = false
         self.view.addSubview(blackFlashView)
