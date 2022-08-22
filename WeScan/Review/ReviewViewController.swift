@@ -157,9 +157,9 @@ final class ReviewViewController: UIViewController {
         reloadImage()
       
         if isCurrentlyDisplayingEnhancedImage {
-            enhanceButton.tintColor = .yellow
+            enhanceButton.tintColor = .red
         } else {
-            enhanceButton.tintColor = .white
+            enhanceButton.tintColor = .black
         }
     }
     
